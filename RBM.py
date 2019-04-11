@@ -54,7 +54,7 @@ class RBM(nn.Module):
             self.W = -self.xavier_value + torch.rand(self.visible_units, self.hidden_units) * (2 * self.xavier_value)
         self.h_bias = torch.zeros(self.hidden_units) #hidden layer bias
         self.v_bias = torch.zeros(self.visible_units) #visible layer bias
-        # self.W = torch.cuda(self.W)
+        # Move weights to CUDA
         if self.use_gpu:
             self.W = self.W.cuda()
             self.h_bias = self.h_bias.cuda()
