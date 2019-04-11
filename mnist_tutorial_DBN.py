@@ -61,8 +61,8 @@ dbn_mnist = DBN(visible_units=28*28 ,
 # In[6]:
 
 
-num_epochs = 1
-batch_size = 10
+num_epochs = 2
+batch_size = 1000
 tensor_x = mnist_data.train_data.cuda()
 tensor_y = mnist_data.train_labels.cuda()
 dbn_mnist.train_static(tensor_x,tensor_y,num_epochs , batch_size)
@@ -72,26 +72,26 @@ dbn_mnist.train_static(tensor_x,tensor_y,num_epochs , batch_size)
 
 
 # visualising layer 1
-learned_weights = dbn_mnist.rbm_layers[0].W.transpose(0,1).numpy()
-plt.show()
-fig = plt.figure(3, figsize=(10,10))
-for i in range(25): 
-    sub = fig.add_subplot(5, 5, i+1)
-    sub.imshow(learned_weights[i,:].reshape((28,28)), cmap=plt.cm.gray)
-plt.show()
+# learned_weights = dbn_mnist.rbm_layers[0].W.transpose(0,1).numpy()
+# plt.show()
+# fig = plt.figure(3, figsize=(10,10))
+# for i in range(25):
+#     sub = fig.add_subplot(5, 5, i+1)
+#     sub.imshow(learned_weights[i,:].reshape((28,28)), cmap=plt.cm.gray)
+# plt.show()
 
 
 # In[ ]:
 
 
 # visualising layer 2
-learned_weights = dbn_mnist.rbm_layers[1].W.transpose(0,1).numpy()
-plt.show()
-fig = plt.figure(3, figsize=(10,10))
-for i in range(25): 
-    sub = fig.add_subplot(5, 5, i+1)
-    sub.imshow(learned_weights[i,:].reshape((23,23)), cmap=plt.cm.gray)
-plt.show()
+# learned_weights = dbn_mnist.rbm_layers[1].W.transpose(0,1).numpy()
+# plt.show()
+# fig = plt.figure(3, figsize=(10,10))
+# for i in range(25):
+#     sub = fig.add_subplot(5, 5, i+1)
+#     sub.imshow(learned_weights[i,:].reshape((23,23)), cmap=plt.cm.gray)
+# plt.show()
 
 
 # In[ ]:
@@ -105,7 +105,7 @@ limit = mnist_data.train_data.shape[0]
 # limit = 60000
 for i in range(limit):
     if(mnist_data.train_labels[i] == number):
-        particular_mnist.append(mnist_data.train_data[i].numpy())
+        particular_mnist.append(mnist_data.train_data[i].cpu().numpy())
 # particular_mnist = np.array(particular_mnist)
 len(particular_mnist)
 # mnist_data.train_data
@@ -121,7 +121,7 @@ train_label = torch.stack([torch.Tensor(number) for i in range(len(particular_mn
 # In[ ]:
 
 
-dbn_mnist.train_static(train_data,train_label,20 , batch_size)
+dbn_mnist.train_static(train_data,train_label,num_epochs , batch_size)
 
 
 # In[ ]:

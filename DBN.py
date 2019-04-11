@@ -20,6 +20,8 @@ class DBN(nn.Module):
                 ):
         super(DBN,self).__init__()
 
+        self.use_gpu = use_gpu
+
         self.n_layers = len(hidden_units)
         self.rbm_layers =[]
         self.rbm_nodes = []
@@ -74,14 +76,19 @@ class DBN(nn.Module):
         go till the final layer and then reconstruct
         '''
         h = input_data
+
         p_h = 0
         for i in range(len(self.rbm_layers)):
             h = h.view((h.shape[0] , -1)).type(torch.FloatTensor)#flatten
+            if self.use_gpu:
+                h = h.cuda()
             p_h,h = self.rbm_layers[i].to_hidden(h)
 
         v = h
         for i in range(len(self.rbm_layers)-1,-1,-1):
             v = v.view((v.shape[0] , -1)).type(torch.FloatTensor)
+            if self.use_gpu:
+                v = v.cuda()
             p_v,v = self.rbm_layers[i].to_visible(v)
         return p_v,v
 
@@ -109,6 +116,8 @@ class DBN(nn.Module):
             self.rbm_layers[i].train(_dataloader , num_epochs,batch_size)
             # print(train_data.shape)
             v = tmp.view((tmp.shape[0] , -1)).type(torch.FloatTensor)#flatten
+            if self.use_gpu:
+                v = v.cuda()
             p_v , v = self.rbm_layers[i].forward(v)
             tmp = v
             # print(v.shape)

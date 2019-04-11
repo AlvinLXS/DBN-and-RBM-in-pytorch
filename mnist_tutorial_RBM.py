@@ -49,7 +49,7 @@ plt.show()
 
 
 # If we train on the whole set we expect it to learn to detect edges.
-batch_size= 512*2
+batch_size= 512*4
 tensor_x = mnist_data.train_data.type(torch.FloatTensor) # transform to torch tensors
 tensor_y = mnist_data.train_labels.type(torch.FloatTensor)
 _dataset = torch.utils.data.TensorDataset(tensor_x,tensor_y) # create your datset
@@ -62,7 +62,7 @@ train_loader = torch.utils.data.DataLoader(_dataset,
 
 # I have have set these hyper parameters although you can experiment with them to find better hyperparameters.
 visible_units=28*28
-hidden_units = 1024*2
+hidden_units = 1024
 k=3
 learning_rate=0.01
 learning_rate_decay = True
@@ -79,7 +79,7 @@ rbm_mnist = RBM(visible_units,hidden_units,k ,learning_rate,learning_rate_decay,
 
 
 
-epochs = 200
+epochs = 3
 
 rbm_mnist.train(train_loader , epochs,batch_size)
 
@@ -147,7 +147,7 @@ rbm_mnist = RBM(visible_units,hidden_units,k ,learning_rate,learning_rate_decay,
                 increase_to_cd_k,use_gpu)
 
 
-epochs = 200
+epochs = 3
 
 rbm_mnist.train(mnist_particular_dataloader , epochs)
 
